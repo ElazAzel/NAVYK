@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 import ToggleButton from "@/components/ToggleButton";
 import UserNav from "@/components/UserNav";
 import RoleNavigation from "@/components/RoleNavigation";
+import NotificationBell from "@/app/components/notifications/NotificationBell";
 import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 
@@ -56,6 +57,7 @@ const NavBar = () => {
           </div>
           
           <div className="flex items-center gap-2">
+            <NotificationBell />
             <ToggleButton />
             <UserNav />
           </div>
@@ -71,4 +73,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar; 
+export default NavBar;

@@ -1,3 +1,5 @@
+"use client"
+
 // Adapted from https://github.com/shadcn-ui/ui/blob/main/packages/ui/src/use-toast.tsx
 import * as React from "react"
 
@@ -189,4 +191,4 @@ function useToast() {
   }
 }
 
-export { useToast, toast } 
+export { useToast, toast }

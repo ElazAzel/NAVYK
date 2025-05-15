@@ -1,26 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+import RoleLayout from "@/components/RoleLayout";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
 import { motion } from "framer-motion";
-import PageLayout from "@/app/components/PageLayout";
 import EventCard, { Event } from "@/app/components/EventCard";
 import { 
-  CalendarIcon, 
-  MagnifyingGlassIcon, 
-  FunnelIcon, 
-  FireIcon,
-  MapPinIcon,
-  ClockIcon,
-  BookmarkIcon 
-} from "@heroicons/react/24/outline";
+  Calendar, MapPin, Search, Filter, Users,
+  ChevronRight, Clock, Building, Plus, Star, 
+  CheckCircle2, CalendarDays, ListFilter
+} from "lucide-react";
 import { formatDate } from "@/app/lib/utils";
 
-export default function StudentEvents() {
+export default function EventsPage() {
   // Состояния для фильтрации и поиска
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState<string | null>(null);
@@ -81,60 +77,10 @@ export default function StudentEvents() {
       organizerType: "работодатель",
       organizerName: "IT Карьера",
       attendees: 312,
+      maxAttendees: 1000,
       points: 150,
       registered: false,
       skills: ["Soft Skills", "Networking", "Job Interview"]
-    },
-    {
-      id: "e4",
-      title: "Воркшоп по UX/UI дизайну",
-      description: "Интенсивный практический семинар по созданию удобных пользовательских интерфейсов. Вы узнаете основные принципы UX дизайна и научитесь применять их на практике.",
-      date: "2023-07-25",
-      startTime: "14:00",
-      endTime: "18:00",
-      location: "Дизайн-студия Miro, 5 этаж",
-      category: "воркшоп",
-      organizerType: "компания",
-      organizerName: "Дизайн-студия Miro",
-      attendees: 15,
-      maxAttendees: 20,
-      points: 120,
-      registered: false,
-      skills: ["UX", "UI", "Figma", "Design Thinking"]
-    },
-    {
-      id: "e5",
-      title: "Летняя стажировка в Data Science",
-      description: "Трехмесячная оплачиваемая стажировка для студентов, изучающих Data Science. Вы будете работать с реальными данными и решать бизнес-задачи под руководством опытных специалистов.",
-      date: "2023-08-01",
-      startTime: "09:00",
-      endTime: "18:00",
-      location: "TechData офис",
-      category: "стажировка",
-      organizerType: "работодатель",
-      organizerName: "TechData",
-      attendees: 10,
-      maxAttendees: 15,
-      points: 300,
-      registered: false,
-      skills: ["Python", "SQL", "Data Analysis", "Statistics"]
-    },
-    {
-      id: "e6",
-      title: "Основы DevOps и CI/CD",
-      description: "Курс познакомит вас с DevOps практиками и инструментами непрерывной интеграции и доставки. Вы узнаете как автоматизировать процессы разработки и деплоя.",
-      date: "2023-08-10",
-      startTime: "16:00",
-      endTime: "19:00",
-      location: "Онлайн",
-      category: "курс",
-      organizerType: "университет",
-      organizerName: "ИТ Академия",
-      attendees: 78,
-      maxAttendees: 100,
-      points: 200,
-      registered: false,
-      skills: ["DevOps", "CI/CD", "Docker", "Jenkins"]
     }
   ]);
   
@@ -242,7 +188,7 @@ export default function StudentEvents() {
   ];
   
   return (
-    <PageLayout>
+    <RoleLayout>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Мероприятия</h1>
         <p className="text-muted-foreground">
@@ -274,7 +220,7 @@ export default function StudentEvents() {
         <div className="mb-6">
           <div className="flex gap-2 mb-4">
             <div className="relative flex-1">
-              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Поиск мероприятий..."
@@ -290,7 +236,7 @@ export default function StudentEvents() {
               onClick={() => setShowFilters(!showFilters)}
               className={showFilters ? "bg-primary text-primary-foreground" : ""}
             >
-              <FunnelIcon className="h-4 w-4" />
+              <Filter className="h-4 w-4" />
             </Button>
           </div>
           
@@ -381,7 +327,7 @@ export default function StudentEvents() {
           ) : (
             <div className="text-center py-12 border rounded-lg bg-muted/20">
               <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center mb-4">
-                <CalendarIcon className="h-8 w-8 text-muted-foreground" />
+                <Calendar className="h-8 w-8 text-muted-foreground" />
               </div>
               <h3 className="text-lg font-medium mb-1">Мероприятия не найдены</h3>
               <p className="text-sm text-muted-foreground">
@@ -396,7 +342,7 @@ export default function StudentEvents() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-medium mb-2 flex items-center">
-                  <FireIcon className="h-5 w-5 mr-1 text-orange-500" />
+                  <Star className="h-5 w-5 mr-1 text-orange-500" />
                   Рекомендуемые мероприятия
                 </h2>
                 <p className="text-sm text-muted-foreground mb-4">
@@ -418,7 +364,7 @@ export default function StudentEvents() {
           ) : (
             <div className="text-center py-12 border rounded-lg bg-muted/20">
               <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center mb-4">
-                <FireIcon className="h-8 w-8 text-muted-foreground" />
+                <Star className="h-8 w-8 text-muted-foreground" />
               </div>
               <h3 className="text-lg font-medium mb-1">Нет рекомендаций</h3>
               <p className="text-sm text-muted-foreground">
@@ -433,58 +379,21 @@ export default function StudentEvents() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-medium mb-2 flex items-center">
-                  <BookmarkIcon className="h-5 w-5 mr-1 text-blue-500" />
+                  <CheckCircle2 className="h-5 w-5 mr-1 text-blue-500" />
                   Мои мероприятия
                 </h2>
                 <p className="text-sm text-muted-foreground mb-4">
                   Мероприятия, на которые вы зарегистрированы
                 </p>
                 
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {upcomingRegisteredEvents.map((event) => (
-                    <Card key={event.id}>
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <Badge variant="outline" className="mb-2">
-                              {event.category}
-                            </Badge>
-                            <h3 className="text-xl font-medium mb-1">{event.title}</h3>
-                            <p className="text-sm text-muted-foreground">
-                              {event.organizerName}
-                            </p>
-                          </div>
-                          <Badge variant="default">Вы зарегистрированы</Badge>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4 text-sm">
-                          <div className="flex items-center gap-1">
-                            <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                            <span>{formatDate(event.date)}</span>
-                          </div>
-                          
-                          <div className="flex items-center gap-1">
-                            <ClockIcon className="h-4 w-4 text-muted-foreground" />
-                            <span>{event.startTime} - {event.endTime}</span>
-                          </div>
-                          
-                          <div className="flex items-center gap-1">
-                            <MapPinIcon className="h-4 w-4 text-muted-foreground" />
-                            <span>{event.location}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex justify-end">
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleCancel(event.id)}
-                          >
-                            Отменить регистрацию
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      onRegister={handleRegister}
+                      onCancel={handleCancel}
+                    />
                   ))}
                 </div>
               </div>
@@ -492,7 +401,7 @@ export default function StudentEvents() {
           ) : (
             <div className="text-center py-12 border rounded-lg bg-muted/20">
               <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center mb-4">
-                <BookmarkIcon className="h-8 w-8 text-muted-foreground" />
+                <CheckCircle2 className="h-8 w-8 text-muted-foreground" />
               </div>
               <h3 className="text-lg font-medium mb-1">Нет зарегистрированных мероприятий</h3>
               <p className="text-sm text-muted-foreground">
@@ -508,6 +417,6 @@ export default function StudentEvents() {
           )}
         </TabsContent>
       </Tabs>
-    </PageLayout>
+    </RoleLayout>
   );
-} 
+}

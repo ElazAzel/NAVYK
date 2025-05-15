@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 
 const badgeVariants = cva(
   "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -49,15 +49,18 @@ const badgeVariants = cva(
   }
 )
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
+type BaseBadgeProps = {
   isNew?: boolean;
   count?: number;
   pulse?: boolean;
   bounce?: boolean;
   glow?: boolean;
-}
+} & VariantProps<typeof badgeVariants>;
+
+type StaticBadgeProps = BaseBadgeProps & React.HTMLAttributes<HTMLDivElement>;
+type AnimatedBadgeProps = BaseBadgeProps & HTMLMotionProps<"div">;
+
+export type BadgeProps = StaticBadgeProps | (AnimatedBadgeProps & { animated: true });
 
 function Badge({ 
   className, 
@@ -69,12 +72,11 @@ function Badge({
   pulse,
   bounce,
   glow,
+  children,
   ...props 
 }: BadgeProps) {
-  // Если нужна анимация, используем motion.div
   const BadgeComponent = animated ? motion.div : "div";
   
-  // Анимационные пропсы
   const animationProps = animated
     ? {
         initial: { scale: 0.8, opacity: 0 },
@@ -84,38 +86,37 @@ function Badge({
       }
     : {};
   
-  // Классы для разных типов анимаций
   const animationClass = cn(
     pulse && "animate-pulse",
     bounce && "animate-bounce",
     glow && "shadow-glow"
   );
     
-  return (
-    <BadgeComponent
-      className={cn(
+  return React.createElement(
+    BadgeComponent,
+    {
+      className: cn(
         badgeVariants({ variant, size, animated }),
         isNew && "relative after:content-[''] after:absolute after:-right-1 after:-top-1 after:h-2 after:w-2 after:rounded-full after:bg-red-500 after:ring-2 after:ring-white dark:after:ring-gray-950",
         animationClass,
         className
-      )}
-      {...animationProps}
-      {...props}
-    >
-      {count !== undefined ? (
-        <>
-          <span>{props.children}</span>
-          {count > 0 && (
-            <span className="ml-1 px-1 bg-white/20 rounded text-[10px] min-w-[16px] text-center">
-              {count}
-            </span>
-          )}
-        </>
-      ) : (
-        props.children
-      )}
-    </BadgeComponent>
-  )
+      ),
+      ...(animated ? animationProps : {}),
+      ...props
+    },
+    count !== undefined ? (
+      <>
+        {children}
+        {count > 0 && (
+          <span className="ml-1 px-1 bg-white/20 rounded text-[10px] min-w-[16px] text-center">
+            {count}
+          </span>
+        )}
+      </>
+    ) : (
+      children
+    )
+  );
 }
 
 export { Badge, badgeVariants }

@@ -15,12 +15,6 @@ const nextConfig = {
       }
     ]
   },
-  // Оптимизация для Vercel
-  experimental: {
-    optimizeFonts: true,
-    optimizeImages: true,
-  },
-  // Настройки сборки
   webpack: (config) => {
     config.resolve.fallback = { fs: false, path: false };
     return config;

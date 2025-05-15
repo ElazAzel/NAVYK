@@ -7,11 +7,13 @@ import NavBar from "@/app/components/NavBar";
 import SideNav from "./SideNav";
 import { cn } from "@/lib/utils";
 import { AnimatedBackground } from "@/app/components/animations";
-import { Bell, Mail, Search } from "lucide-react";
+import { Bell, Mail, Search, Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface RoleLayoutProps {
   children: ReactNode;
@@ -30,6 +32,8 @@ export default function RoleLayout({
   const [mounted, setMounted] = useState(false);
   const [notifications, setNotifications] = useState(3);
   const [messages, setMessages] = useState(2);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   
   // Проверяем авторизацию и соответствие роли
   useEffect(() => {
@@ -40,8 +44,9 @@ export default function RoleLayout({
       return;
     }
 
-    if (user && user.role) {
-      const currentRole = pathname.split("/")[1]; // например, "student" из "/student/profile"
+    if (user && user.role && pathname) {
+      const pathParts = pathname.split("/");
+      const currentRole = pathParts.length > 1 ? pathParts[1] : ""; // например, "student" из "/student/profile"
       if (currentRole !== user.role) {
         // Если пользователь пытается получить доступ к ресурсам другой роли,
         // перенаправляем его на главную страницу его роли
@@ -79,7 +84,8 @@ export default function RoleLayout({
   };
   
   // Определяем текущий раздел для подсветки
-  const currentSection = pathname.split("/")[2] || "dashboard";
+  const pathParts = pathname ? pathname.split("/") : [];
+  const currentSection = pathParts.length > 2 ? pathParts[2] : "dashboard";
   const borderClass = pageBorders[currentSection as keyof typeof pageBorders] || "border-l-primary";
   
   return (
@@ -91,30 +97,48 @@ export default function RoleLayout({
       
       {showSideNav ? (
         <>
-          <SideNav />
+          {isDesktop ? (
+            <SideNav />
+          ) : (
+            <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+              <SheetContent side="left" className="p-0 w-[280px]">
+                <SideNav />
+              </SheetContent>
+            </Sheet>
+          )}
+
           <div className={cn(
-            "ml-64 min-h-screen"
+            "min-h-screen",
+            isDesktop ? "ml-64" : "ml-0"
           )}>
             <NavBar />
             
             <div className="sticky top-14 z-20 bg-background/80 backdrop-blur-sm border-b">
               <div className="container mx-auto p-4 flex items-center justify-between">
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center space-x-4"
-                >
-                  <h1 className="text-2xl font-semibold tracking-tight">
-                    {pageTitle || 
-                      pathname.split("/").pop()?.charAt(0).toUpperCase() + 
-                      pathname.split("/").pop()?.slice(1) || 
-                      "Дашборд"}
-                  </h1>
-                </motion.div>
+                <div className="flex items-center space-x-4">
+                  {!isDesktop && (
+                    <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)}>
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  )}
+                  <motion.div 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center"
+                  >
+                    <h1 className="text-xl lg:text-2xl font-semibold tracking-tight truncate">
+                      {pageTitle || 
+                        (pathname && pathname.split("/").pop() ? 
+                          pathname.split("/").pop()!.charAt(0).toUpperCase() + 
+                          pathname.split("/").pop()!.slice(1) 
+                          : "Дашборд")}
+                    </h1>
+                  </motion.div>
+                </div>
                 
                 <div className="flex items-center space-x-2">
-                  <div className="relative w-64">
+                  <div className="relative hidden md:block w-64">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input 
                       placeholder="Поиск..." 
@@ -153,7 +177,7 @@ export default function RoleLayout({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="container mx-auto p-4 sm:p-6 lg:p-8"
+              className="container mx-auto px-3 py-4 sm:p-6 lg:p-8"
             >
               {children}
             </motion.main>
@@ -166,7 +190,7 @@ export default function RoleLayout({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="container mx-auto p-4 sm:p-6 lg:p-8"
+            className="container mx-auto px-3 py-4 sm:p-6 lg:p-8"
           >
             {children}
           </motion.main>
