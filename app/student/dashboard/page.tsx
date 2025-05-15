@@ -412,105 +412,114 @@ export default function StudentDashboard() {
   };
   
   return (
-    <RoleLayout pageTitle="Дашборд студента">
+    <RoleLayout showSideNav={true} pageTitle="Дашборд">
       <div className="space-y-8">
-        <motion.div 
-          variants={container} 
-          initial="hidden"
-          animate="show"
-          className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
-        >
-          <motion.div variants={item}>
-            <Card className="overflow-hidden" variant="elevated">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Прогресс обучения</CardTitle>
-                <BookOpen className="h-4 w-4 text-primary" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  <AnimatedStatistics from={0} to={67} suffix="%" />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="show"
+            className="col-span-1"
+          >
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                    <BookOpen className="h-6 w-6 text-primary" />
+                  </div>
+                  <span className="text-xs font-medium bg-primary/10 text-primary py-1 px-2 rounded-full">
+                    +12% с прошлого месяца
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  выполнено заданий
-                </p>
-                <div className="mt-3">
-                  <AnimatedProgressBar value={67} max={100} color="primary" />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-          
-          <motion.div variants={item}>
-            <Card className="overflow-hidden" variant="elevated">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Мероприятия</CardTitle>
-                <Calendar className="h-4 w-4 text-secondary" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  <AnimatedStatistics from={0} to={5} />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  доступно для записи
-                </p>
-                <div className="mt-3 flex items-center text-xs text-secondary dark:text-secondary">
-                  <Badge className="h-5 bg-secondary/10 text-secondary border-secondary/30">
-                    2 новых сегодня
-                  </Badge>
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold">3</h3>
+                  <p className="text-sm text-muted-foreground">Активных курсов</p>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
           
-          <motion.div variants={item}>
-            <Card className="overflow-hidden" variant="elevated">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Достижения</CardTitle>
-                <Award className="h-4 w-4 text-amber-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  <AnimatedStatistics from={0} to={8} />
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="show"
+            className="col-span-1"
+          >
+            <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200 dark:border-green-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
+                    <Award className="h-6 w-6 text-green-500" />
+                  </div>
+                  <span className="text-xs font-medium bg-green-500/10 text-green-500 py-1 px-2 rounded-full">
+                    +3 за неделю
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  получено наград
-                </p>
-                <div className="mt-3">
-                  <AnimatedProgressBar value={8} max={12} color="amber-500" />
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold">7</h3>
+                  <p className="text-sm text-muted-foreground">Достижений разблокировано</p>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
           
-          <motion.div variants={item}>
-            <Card className="overflow-hidden" variant="elevated">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Вакансии</CardTitle>
-                <Building className="h-4 w-4 text-blue-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  <AnimatedStatistics from={0} to={12} />
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="show"
+            className="col-span-1"
+          >
+            <Card className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950 dark:to-amber-900 border-amber-200 dark:border-amber-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+                    <Calendar className="h-6 w-6 text-amber-500" />
+                  </div>
+                  <span className="text-xs font-medium bg-amber-500/10 text-amber-500 py-1 px-2 rounded-full">
+                    Следующее: 15 апреля
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  подходят вашему профилю
-                </p>
-                <div className="mt-3 flex items-center text-xs text-blue-600 dark:text-blue-500">
-                  <TrendingUp className="h-3 w-3 mr-1" />
-                  <span>+4 за неделю</span>
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold">4</h3>
+                  <p className="text-sm text-muted-foreground">Предстоящих мероприятий</p>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
-        </motion.div>
+          
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="show"
+            className="col-span-1"
+          >
+            <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-950 dark:to-indigo-900 border-indigo-200 dark:border-indigo-800">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                    <Building className="h-6 w-6 text-indigo-500" />
+                  </div>
+                  <span className="text-xs font-medium bg-indigo-500/10 text-indigo-500 py-1 px-2 rounded-full">
+                    Релевантность: 85%
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold">12</h3>
+                  <p className="text-sm text-muted-foreground">Подходящих вакансий</p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
 
-        <div className="mb-6">
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="mb-4">
-              <TabsTrigger value="overview" onClick={() => setActiveTab("overview")}>Обзор</TabsTrigger>
-              <TabsTrigger value="courses" onClick={() => setActiveTab("courses")}>Курсы</TabsTrigger>
-              <TabsTrigger value="events" onClick={() => setActiveTab("events")}>Мероприятия</TabsTrigger>
-              <TabsTrigger value="vacancies" onClick={() => setActiveTab("vacancies")}>Вакансии</TabsTrigger>
+        <div>
+          <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full max-w-4xl mb-6">
+              <TabsTrigger value="overview">Обзор</TabsTrigger>
+              <TabsTrigger value="courses">Курсы</TabsTrigger>
+              <TabsTrigger value="events">Мероприятия</TabsTrigger>
+              <TabsTrigger value="jobs" className="hidden md:inline-flex">Вакансии</TabsTrigger>
+              <TabsTrigger value="achievements" className="hidden lg:inline-flex">Достижения</TabsTrigger>
             </TabsList>
             
             <TabsContent value="overview">
@@ -1071,7 +1080,7 @@ export default function StudentDashboard() {
               </div>
             </TabsContent>
             
-            <TabsContent value="vacancies">
+            <TabsContent value="jobs">
               <div className="space-y-6">
                 <div>
                   <h3 className="text-lg font-medium mb-4">Рекомендуемые вакансии</h3>

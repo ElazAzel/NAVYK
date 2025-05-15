@@ -49,73 +49,34 @@ const badgeVariants = cva(
   }
 )
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
-  isNew?: boolean;
-  count?: number;
-  pulse?: boolean;
-  bounce?: boolean;
-  glow?: boolean;
+const BadgeComponent = motion.div
+
+interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: VariantProps<typeof badgeVariants>["variant"]
+  size?: VariantProps<typeof badgeVariants>["size"]
+  animated?: boolean
+  isNew?: boolean
 }
 
-function Badge({ 
-  className, 
-  variant, 
+export function Badge({
+  className,
+  variant,
   size,
   animated,
   isNew,
-  count,
-  pulse,
-  bounce,
-  glow,
-  ...props 
+  ...props
 }: BadgeProps) {
-  // Если нужна анимация, используем motion.div
-  const BadgeComponent = animated ? motion.div : "div";
-  
-  // Анимационные пропсы
-  const animationProps = animated
-    ? {
-        initial: { scale: 0.8, opacity: 0 },
-        animate: { scale: 1, opacity: 1 },
-        transition: { duration: 0.3 },
-        whileHover: { scale: 1.05 }
-      }
-    : {};
-  
-  // Классы для разных типов анимаций
-  const animationClass = cn(
-    pulse && "animate-pulse",
-    bounce && "animate-bounce",
-    glow && "shadow-glow"
-  );
-    
-  return (
-    <BadgeComponent
-      className={cn(
+  return React.createElement(
+    BadgeComponent,
+    {
+      className: cn(
         badgeVariants({ variant, size, animated }),
         isNew && "relative after:content-[''] after:absolute after:-right-1 after:-top-1 after:h-2 after:w-2 after:rounded-full after:bg-red-500 after:ring-2 after:ring-white dark:after:ring-gray-950",
-        animationClass,
         className
-      )}
-      {...animationProps}
-      {...props}
-    >
-      {count !== undefined ? (
-        <>
-          <span>{props.children}</span>
-          {count > 0 && (
-            <span className="ml-1 px-1 bg-white/20 rounded text-[10px] min-w-[16px] text-center">
-              {count}
-            </span>
-          )}
-        </>
-      ) : (
-        props.children
-      )}
-    </BadgeComponent>
+      ),
+      ...props
+    }
   )
 }
 
-export { Badge, badgeVariants }
+export { badgeVariants }

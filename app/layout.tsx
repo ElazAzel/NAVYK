@@ -1,8 +1,8 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
-import Providers from './providers';
-import { AuthProvider } from '@/context/auth-context';
+import { Providers } from './providers';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] });
 
@@ -24,10 +24,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} antialiased min-h-screen flex flex-col`}>
         <Providers>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          {children}
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

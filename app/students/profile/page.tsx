@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -25,13 +25,19 @@ import {
   StarIcon
 } from "@heroicons/react/24/outline";
 import { FireIcon as FireIconSolid, StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
-import { motion } from "framer-motion";
-import PageLayout from "@/app/components/PageLayout";
+
+import RoleLayout from "@/components/RoleLayout";
 import Link from "next/link";
 
 export default function StudentProfile() {
   const [showFullSkills, setShowFullSkills] = useState(false);
   const [activeTab, setActiveTab] = useState("career");
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Используем useEffect для загрузки компонентов framer-motion только на клиенте
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Данные студента
   const student = {
@@ -130,7 +136,7 @@ export default function StudentProfile() {
   };
 
   return (
-    <PageLayout>
+    <RoleLayout>
       {/* Верхняя панель с профилем и эелементами геймификации */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
         {/* Профиль и геймификация */}
@@ -155,14 +161,14 @@ export default function StudentProfile() {
                   <StarIconSolid className="h-5 w-5 text-amber-500 ml-1" />
                 </div>
                 
-                <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden mb-1">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: "65%" }}
-                    transition={{ duration: 1, delay: 0.2 }}
-                    className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
-                  />
-                </div>
+                {isMounted && (
+                  <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden mb-1">
+                    <div 
+                      className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full" 
+                      style={{ width: "65%" }}
+                    />
+                  </div>
+                )}
                 <div className="text-center text-sm text-muted-foreground mb-3">2450 / 3800 XP</div>
                 
                 <div className="grid grid-cols-3 gap-2 text-center">
@@ -233,7 +239,7 @@ export default function StudentProfile() {
               {student.achievements.slice(0, 3).map((achievement, idx) => (
                 <div key={idx} className="flex items-center gap-3 rounded-lg p-2 hover:bg-muted/50 transition-colors">
                   <div className="h-10 w-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-xl">
-                    {achievement.completed ? "🏆" : "🔄"}
+                    {achievement.completed ? "🏆" : "📊"}
                   </div>
                   <div>
                     <p className="font-medium text-sm">{achievement.title}</p>
@@ -307,12 +313,12 @@ export default function StudentProfile() {
                       </div>
                       
                       <div className="h-3 w-full bg-muted rounded-full overflow-hidden mb-1 mt-3">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: "42%" }}
-                          transition={{ duration: 1.5, delay: 0.2 }}
-                          className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                        />
+                        {isMounted && (
+                          <div
+                            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                            style={{ width: "42%" }}
+                          />
+                        )}
                       </div>
                       <div className="flex justify-between text-sm text-muted-foreground">
                         <span>Текущий прогресс</span>
@@ -327,12 +333,12 @@ export default function StudentProfile() {
                             <span className="font-medium">65%</span>
                           </div>
                           <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: "65%" }}
-                              transition={{ duration: 1, delay: 0.3 }}
-                              className="h-full bg-blue-500 rounded-full"
-                            />
+                            {isMounted && (
+                              <div
+                                className="h-full bg-blue-500 rounded-full"
+                                style={{ width: "65%" }}
+                              />
+                            )}
                           </div>
                         </div>
                         
@@ -342,12 +348,12 @@ export default function StudentProfile() {
                             <span className="font-medium">45%</span>
                           </div>
                           <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: "45%" }}
-                              transition={{ duration: 1, delay: 0.4 }}
-                              className="h-full bg-green-500 rounded-full"
-                            />
+                            {isMounted && (
+                              <div
+                                className="h-full bg-green-500 rounded-full"
+                                style={{ width: "45%" }}
+                              />
+                            )}
                           </div>
                         </div>
                         
@@ -357,12 +363,12 @@ export default function StudentProfile() {
                             <span className="font-medium">30%</span>
                           </div>
                           <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: "30%" }}
-                              transition={{ duration: 1, delay: 0.5 }}
-                              className="h-full bg-amber-500 rounded-full"
-                            />
+                            {isMounted && (
+                              <div
+                                className="h-full bg-amber-500 rounded-full"
+                                style={{ width: "30%" }}
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
@@ -513,11 +519,9 @@ export default function StudentProfile() {
                               <span className="font-medium text-gray-600 dark:text-gray-400">{skill.level}%</span>
                             </div>
                             <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${skill.level}%` }}
-                                transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+                              <div
                                 className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+                                style={{ width: `${skill.level}%` }}
                               />
                             </div>
                           </div>
@@ -677,6 +681,6 @@ export default function StudentProfile() {
           </Card>
         </div>
       </div>
-    </PageLayout>
+    </RoleLayout>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import Image from 'next/image';
 
 // Анимированный фон с градиентом
 export const AnimatedBackground: React.FC<{ className?: string }> = ({ className }) => {
@@ -209,7 +210,7 @@ export const AnimatedTestimonialCard: React.FC<AnimatedTestimonialCardProps> = (
       <p className="text-foreground mb-4 italic">{quote}</p>
       <div className="flex items-center mt-4">
         {avatar ? (
-          <img src={avatar} alt={author} className="w-10 h-10 rounded-full mr-3" />
+          <Image src={avatar} alt={author} className="w-10 h-10 rounded-full mr-3" width={40} height={40} />
         ) : (
           <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center mr-3">
             {author[0]}
@@ -427,4 +428,4 @@ export const AnimatedTextChanger: React.FC<AnimatedTextChangerProps> = ({
       </AnimatePresence>
     </div>
   );
-}; 
+};

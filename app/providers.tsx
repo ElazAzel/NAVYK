@@ -1,16 +1,17 @@
 "use client";
 
-import { ReactNode } from "react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ThemeProvider } from "next-themes";
+import { NotificationsProvider } from "./components/notifications/NotificationsProvider";
+import { AuthProvider } from "@/context/auth-context";
 
-interface ProvidersProps {
-  children: ReactNode;
-}
-
-export default function Providers({ children }: ProvidersProps) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
-      {children}
-    </NextThemesProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <AuthProvider>
+        <NotificationsProvider>
+          {children}
+        </NotificationsProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
-} 
+}
