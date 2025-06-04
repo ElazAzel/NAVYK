@@ -49,3 +49,5 @@ next-env.d.ts
 ehthumbs.db
 Thumbs.db
 *.pem
+*storybook.log
+storybook-static

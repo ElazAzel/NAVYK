@@ -1,14 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Manager } from 'socket.io-client';
+import type { SocketType, SocketConnectionOptions, WebSocketMessage } from '@/app/lib/types/socket';
 
-interface UseRealTimeDataOptions {
-  url: string;
+interface UseRealTimeDataOptions extends SocketConnectionOptions {
   event: string;
   initialData?: any;
-  authToken?: string;
-  autoConnect?: boolean;
-  reconnectionAttempts?: number;
-  reconnectionDelay?: number;
 }
 
 interface UseRealTimeDataReturn<T> {
@@ -31,7 +27,10 @@ export function useRealTimeData<T>({
   authToken,
   autoConnect = true,
   reconnectionAttempts = 5,
-  reconnectionDelay = 3000
+  reconnectionDelay = 3000,
+  onConnect,
+  onDisconnect,
+  onError
 }: UseRealTimeDataOptions): UseRealTimeDataReturn<T> {
   const [data, setData] = useState<T>(initialData as T);
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -39,113 +38,94 @@ export function useRealTimeData<T>({
   const [error, setError] = useState<Error | null>(null);
   const [connectionAttempts, setConnectionAttempts] = useState<number>(0);
   
-  const socketRef = useRef<Socket | null>(null);
-  
+  const socketRef = useRef<SocketType | null>(null);
+
   // Инициализация и подключение
-  const connect = () => {
-    // Для симуляции в тестах
+  const connect = useCallback(() => {
     if (process.env.NODE_ENV === 'test' || !url) {
       setIsLoading(false);
       setIsConnected(true);
       return;
     }
-    
+
     try {
-      if (!socketRef.current) {
-        socketRef.current = io(url, {
-          auth: authToken ? { token: authToken } : undefined,
-          reconnection: true,
-          reconnectionAttempts,
-          reconnectionDelay,
-        });
-      }
-      
-      // Обработка подключения
+      const manager = new Manager(url, {
+        autoConnect: false,
+        reconnection: true,
+        reconnectionAttempts,
+        reconnectionDelay,
+        auth: authToken ? { token: authToken } : undefined
+      });
+
+      socketRef.current = manager.socket('/');
+
       socketRef.current.on('connect', () => {
         setIsConnected(true);
         setIsLoading(false);
         setError(null);
         setConnectionAttempts(0);
+        onConnect?.();
       });
-      
-      // Обработка отключения
+
       socketRef.current.on('disconnect', () => {
         setIsConnected(false);
+        setConnectionAttempts(prev => prev + 1);
+        onDisconnect?.();
       });
-      
-      // Обработка ошибок
-      socketRef.current.on('connect_error', (err) => {
+
+      socketRef.current.on('error', (err: Error) => {
         setError(err);
-        setIsLoading(false);
-        
-        if (connectionAttempts < reconnectionAttempts) {
-          setConnectionAttempts(prev => prev + 1);
-          setTimeout(() => {
-            socketRef.current?.connect();
-          }, reconnectionDelay);
-        }
+        onError?.(err);
       });
-      
-      // Получение данных по событию
+
       socketRef.current.on(event, (newData: T) => {
         setData(newData);
       });
-      
-      // Попытка подключения
-      if (!socketRef.current.connected) {
-        socketRef.current.connect();
-      }
+
+      socketRef.current.connect();
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Неизвестная ошибка подключения'));
+      const socketError = err instanceof Error ? err : new Error('Failed to connect');
+      setError(socketError);
       setIsLoading(false);
+      onError?.(socketError);
     }
-  };
-  
-  // Отключение
-  const disconnect = () => {
+  }, [url, event, authToken, reconnectionAttempts, reconnectionDelay, onConnect, onDisconnect, onError]);
+
+  // Мемоизируем функция отключения
+  const disconnect = useCallback(() => {
     if (socketRef.current) {
       socketRef.current.disconnect();
-      socketRef.current = null;
     }
     setIsConnected(false);
-  };
-  
+    setError(null);
+  }, []);
+
   // Отправка данных
-  const sendEvent = (eventName: string, eventData?: any) => {
-    if (socketRef.current && isConnected) {
-      socketRef.current.emit(eventName, eventData);
-    } else {
-      console.warn('Попытка отправить событие при отсутствии подключения');
+  const sendEvent = useCallback((eventName: string, eventData?: any) => {
+    if (!socketRef.current?.connected) {
+      console.warn('Socket not connected');
+      return;
     }
-  };
-  
+    
+    try {
+      socketRef.current.emit(eventName, eventData);
+    } catch (err) {
+      console.error('Failed to send event:', err);
+    }
+  }, []);
+
   // Подключение при монтировании, если autoConnect = true
   useEffect(() => {
     if (autoConnect) {
       connect();
     }
-    
+
     // Отключение при размонтировании
     return () => {
       disconnect();
     };
-  }, [url, authToken, autoConnect, connect]);
-  
-  // Фиктивная реализация для разработки, если нет реального сервера
-  useEffect(() => {
-    // Только в среде разработки и если нет реального подключения
-    if (process.env.NODE_ENV === 'development' && !socketRef.current && initialData) {
-      // Имитация получения данных через интервал
-      const interval = setInterval(() => {
-        if (typeof initialData === 'function') {
-          setData(initialData());
-        }
-      }, 3000);
-      
-      return () => clearInterval(interval);
-    }
-  }, [initialData]);
-  
+  }, [connect, disconnect, autoConnect]);
+
   return {
     data,
     isConnected,
@@ -155,4 +135,4 @@ export function useRealTimeData<T>({
     connect,
     disconnect
   };
-} 
+}

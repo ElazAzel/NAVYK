@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 220 35% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 35% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 35% 15%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 250 89% 60%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 337 100% 56%;
+    --accent-foreground: 210 40% 98%;
+
+    --success: 151 50% 53%;
+    --success-foreground: 210 40% 98%;
+
+    --muted: 210 40% 93%;
+    --muted-foreground: 220 35% 45%;
+
+    --destructive: 0 100% 67%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 35% 85%;
+    --input: 220 35% 85%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 220 35% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 35% 13%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 35% 13%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 250 89% 65%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 337 100% 61%;
+    --accent-foreground: 210 40% 98%;
+
+    --success: 151 50% 53%;
+    --success-foreground: 210 40% 98%;
+
+    --muted: 220 35% 15%;
+    --muted-foreground: 210 40% 62%;
+
+    --destructive: 0 85% 65%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 35% 20%;
+    --input: 220 35% 20%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "kern";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-medium;
+  }
+
+  /* Улучшение отображения кириллицы */
+  h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select {
+    @apply tracking-tight;
+    text-wrap: balance;
+  }
+
+  /* Глобальные стили для карточек */
+  .card {
+    @apply border bg-card text-card-foreground shadow-sm;
+  }
+
+  /* Глобальные стили для переходов */
+  .custom-transition {
+    @apply transition duration-300 ease-in-out;
+  }
+
+  /* Фиксирование контейнеров */
+  .container {
+    @apply mx-auto px-4;
+  }
+}
+
+@layer components {
+  /* Стеклянный эффект для карточек */
+  .glass {
+    @apply bg-white/40 dark:bg-gray-950/40 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-gray-800/20;
+  }
+
+  /* Эффект неоморфизма */
+  .neumorphic {
+    @apply bg-gray-100 dark:bg-gray-800 shadow-[6px_6px_12px_0px_rgba(0,0,0,0.1),-6px_-6px_12px_0px_rgba(255,255,255,0.8)] dark:shadow-[6px_6px_12px_0px_rgba(0,0,0,0.5),-6px_-6px_12px_0px_rgba(255,255,255,0.1)];
+  }
+
+  /* Градиентная кнопка в стиле Apple */
+  .gradient-button {
+    @apply relative overflow-hidden transition-all duration-300 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white shadow-lg hover:shadow-xl active:scale-95;
+  }
+
+  /* Анимированная карточка */
+  .card-hover {
+    @apply transition-all duration-300 hover:translate-y-[-5px] hover:shadow-lg;
+  }
+
+  /* Красивая анимация прогресса */
+  .progress-animation {
+    @apply relative overflow-hidden;
+  }
+  
+  .progress-animation::after {
+    content: "";
+    @apply absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-r from-transparent via-white/20 to-transparent;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Пульсирующий эффект для индикаторов */
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(var(--primary), 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(var(--primary), 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(var(--primary), 0);
+    }
+  }
+}
+
+/* Кастомный скроллбар в стиле Apple */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-600;
+}
+
+/* Плавные переходы для темной темы */
+html.dark {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) {
+    color-scheme: dark;
+  }
+}
+
+html {
+  transition: background-color 0.3s ease;
+} 

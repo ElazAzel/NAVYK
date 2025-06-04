@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { jwtVerify, SignJWT } from 'jose';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -89,27 +89,60 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     }
   });
   
-  // Проверка и обновление токена
-  const verifyAndRefreshToken = async (token: string) => {
+  // Обновление токена
+  const refreshToken = useCallback(async (): Promise<boolean> => {
     try {
-      // Секретный ключ (в реальном приложении должен храниться безопасно)
+      if (securityState.isAuthenticated && securityState.userRoles.length > 0) {
+        const secret = new TextEncoder().encode(
+          process.env.NEXT_PUBLIC_JWT_SECRET || 'default_secret_key_for_jwt_please_change_in_production'
+        );
+        
+        const expiryDate = new Date();
+        expiryDate.setHours(expiryDate.getHours() + 2);
+        
+        const token = await new SignJWT({ 
+          roles: securityState.userRoles
+        })
+          .setProtectedHeader({ alg: 'HS256' })
+          .setIssuedAt()
+          .setExpirationTime(expiryDate.getTime() / 1000)
+          .sign(secret);
+        
+        localStorage.setItem('navyk_token', token);
+        
+        setSecurityState(prev => ({
+          ...prev,
+          currentToken: token,
+          sessionExpiry: expiryDate,
+          lastActivity: new Date()
+        }));
+        
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Ошибка обновления токена:', error);
+      return false;
+    }
+  }, [securityState.isAuthenticated, securityState.userRoles]);
+
+  // Проверка и обновление токена
+  const verifyAndRefreshToken = useCallback(async (token: string) => {
+    try {
       const secret = new TextEncoder().encode(
         process.env.NEXT_PUBLIC_JWT_SECRET || 'default_secret_key_for_jwt_please_change_in_production'
       );
       
-      // Проверка токена
       const { payload } = await jwtVerify(token, secret);
       
       if (payload.exp && typeof payload.exp === 'number') {
         const expiryDate = new Date(payload.exp * 1000);
         
-        // Если токен просрочен или истекает в течение 10 минут
         const tenMinutes = 10 * 60 * 1000;
         if (expiryDate.getTime() - Date.now() < tenMinutes) {
           return refreshToken();
         }
         
-        // Токен действителен
         setSecurityState(prev => ({
           ...prev,
           currentToken: token,
@@ -120,13 +153,12 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
         
         return true;
       }
-      
       return false;
     } catch (error) {
       console.error('Ошибка проверки токена:', error);
       return false;
     }
-  };
+  }, [refreshToken]);
   
   // Генерация CSRF токена при загрузке
   useEffect(() => {
@@ -148,7 +180,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     if (storedToken) {
       verifyAndRefreshToken(storedToken);
     }
-  }, []);
+  }, [verifyAndRefreshToken]);
   
   // Мониторинг активности пользователя
   useEffect(() => {
@@ -172,7 +204,25 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
       window.removeEventListener('click', handleUserActivity);
       window.removeEventListener('scroll', handleUserActivity);
     };
-  }, []);
+  }, [setSecurityState]);
+  
+  // Мемоизируем функцию logout
+  const logout = useCallback(() => {
+    // Удаление токена
+    localStorage.removeItem('navyk_token');
+    
+    // Обновление состояния безопасности
+    setSecurityState(prev => ({
+      ...prev,
+      currentToken: null,
+      isAuthenticated: false,
+      userRoles: [],
+      sessionExpiry: null
+    }));
+    
+    // Перенаправление на страницу входа
+    router.push('/login');
+  }, [router]);
   
   // Автоматический выход при неактивности
   useEffect(() => {
@@ -198,7 +248,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     // Проверка каждую минуту
     timeoutId = setInterval(checkInactivity, 60 * 1000);
     return () => clearInterval(timeoutId);
-  }, [securityState.lastActivity, securityState.isAuthenticated]);
+  }, [logout, securityState.lastActivity, securityState.isAuthenticated]);
   
   // Аутентификация пользователя
   const login = async (username: string, password: string): Promise<boolean> => {
@@ -281,77 +331,6 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error('Ошибка входа:', error);
-      return false;
-    }
-  };
-  
-  // Выход пользователя
-  const logout = () => {
-    // Удаление токена
-    localStorage.removeItem('navyk_token');
-    
-    // Обновление состояния безопасности
-    setSecurityState(prev => ({
-      ...prev,
-      currentToken: null,
-      isAuthenticated: false,
-      userRoles: [],
-      sessionExpiry: null
-    }));
-    
-    // Перенаправление на страницу входа
-    router.push('/login');
-  };
-  
-  // Обновление токена
-  const refreshToken = async (): Promise<boolean> => {
-    try {
-      // В реальном приложении здесь должен быть запрос к API
-      // const response = await fetch('/api/auth/refresh', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${securityState.currentToken}`,
-      //     'X-CSRF-Token': securityState.csrfToken
-      //   }
-      // });
-      
-      // Имитация обновления токена
-      if (securityState.isAuthenticated && securityState.userRoles.length > 0) {
-        const secret = new TextEncoder().encode(
-          process.env.NEXT_PUBLIC_JWT_SECRET || 'default_secret_key_for_jwt_please_change_in_production'
-        );
-        
-        // Срок действия токена - 2 часа от текущего момента
-        const expiryDate = new Date();
-        expiryDate.setHours(expiryDate.getHours() + 2);
-        
-        // Создание и подписание токена
-        const token = await new SignJWT({ 
-          roles: securityState.userRoles,
-          // Здесь можно включить другие данные пользователя
-        })
-          .setProtectedHeader({ alg: 'HS256' })
-          .setIssuedAt()
-          .setExpirationTime(expiryDate.getTime() / 1000)
-          .sign(secret);
-        
-        // Сохранение токена
-        localStorage.setItem('navyk_token', token);
-        
-        // Обновление состояния безопасности
-        setSecurityState(prev => ({
-          ...prev,
-          currentToken: token,
-          sessionExpiry: expiryDate,
-          lastActivity: new Date()
-        }));
-        
-        return true;
-      }
-      
-      return false;
-    } catch (error) {
-      console.error('Ошибка обновления токена:', error);
       return false;
     }
   };
@@ -688,4 +667,4 @@ export const generateRequestSignature = (payload: any, timestamp: number, token:
   const data = JSON.stringify(payload) + timestamp + token;
   // В реальном приложении здесь должен быть более надежный алгоритм хеширования
   return btoa(data);
-}; 
+};

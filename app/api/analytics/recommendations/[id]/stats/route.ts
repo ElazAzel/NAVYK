@@ -1,10 +1,9 @@
+import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+type Params = { params: { id: string } }
+
+export async function GET(request: NextRequest, { params }: Params) {
   try {
     const recommendationId = params.id;
     
