@@ -13,21 +13,19 @@ export type StudentRoutes = {
 };
 
 export type EmployerRoutes = {
-  DASHBOARD: '/employers/dashboard';
-  JOBS: '/employers/jobs';
-  CANDIDATES: '/employers/candidates';
+  DASHBOARD: '/employer/dashboard';
+  JOBS: '/employer/jobs';
+  CANDIDATES: '/employer/candidates';
 };
 
 export type UniversityRoutes = {
-  DASHBOARD: '/universities/dashboard';
-  STUDENTS: '/universities/students';
-  ANALYTICS: '/universities/analytics';
+  DASHBOARD: '/university/dashboard';
+  STUDENTS: '/university/students';
+  ANALYTICS: '/university/analytics';
 };
 
 export type MentorRoutes = {
-  DASHBOARD: '/mentors/dashboard';
-  SESSIONS: '/mentors/sessions';
-  STUDENTS: '/mentors/students';
+  DASHBOARD: '/mentor/dashboard';
 };
 
 export type AdminRoutes = {
@@ -48,4 +46,10 @@ export type AppRoutes = {
 };
 
 export type RouteValue<T> = T[keyof T];
-export type AppRoute = RouteValue<AppRoutes[keyof AppRoutes]>;
+export type AppRoute =
+  | '/'
+  | RouteValue<StudentRoutes>
+  | RouteValue<EmployerRoutes>
+  | RouteValue<UniversityRoutes>
+  | RouteValue<MentorRoutes>
+  | RouteValue<AdminRoutes>;

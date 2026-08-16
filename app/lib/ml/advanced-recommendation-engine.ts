@@ -53,11 +53,11 @@ export class AdvancedRecommendationEngine {
       ]
     });
 
-    const userVector = userTower.apply(userInput);
-    const itemVector = itemTower.apply(itemInput);
+    const userVector = userTower.apply(userInput) as tf.SymbolicTensor;
+    const itemVector = itemTower.apply(itemInput) as tf.SymbolicTensor;
 
     // Dot product layer для вычисления схожести
-    const dot = tf.layers.dot({ axes: -1 }).apply([userVector, itemVector]);
+    const dot = tf.layers.dot({ axes: -1 }).apply([userVector, itemVector]) as tf.SymbolicTensor;
 
     this.model = tf.model({
       inputs: [userInput, itemInput],
@@ -84,10 +84,10 @@ export class AdvancedRecommendationEngine {
 
     // Генерируем эмбеддинг на основе профиля пользователя
     const userProfile = [
+      user.student?.university?.name,
+      user.student?.graduation,
       user.student?.skills?.join(' '),
-      user.student?.interests?.join(' '),
-      user.student?.experience?.join(' '),
-      user.student?.education?.join(' ')
+      user.student?.projects?.map(p => `${p.title} ${p.technologies?.join(' ') ?? ''}`).join(' ')
     ].filter(Boolean).join(' ');
 
     const embedding = await this.generateEmbedding(userProfile);

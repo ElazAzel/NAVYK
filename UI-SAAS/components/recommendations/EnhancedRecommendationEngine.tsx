@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon, TrendingUp, BookOpen, Briefcase } from "lucide-react";
-import { RecommendationEngine } from "@/lib/ml/recommendation-engine";
+import { RecommendationEngine } from "@/app/lib/ml/recommendation-engine";
 import { useNotifications } from "../notifications/NotificationsProvider";
 
 interface EnhancedRecommendation {

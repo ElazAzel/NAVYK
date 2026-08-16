@@ -520,7 +520,7 @@ export default function MentorDashboard() {
                         </div>
                       ))}
                       <div className="pt-2 border-t">
-                        <Link href="/mentor/students">
+                        <Link href="/mentor/dashboard">
                           <Button size="sm" variant="ghost" className="w-full justify-center">
                             Все студенты
                           </Button>

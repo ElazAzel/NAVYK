@@ -53,11 +53,10 @@ export function useRealTimeData<T>({
         autoConnect: false,
         reconnection: true,
         reconnectionAttempts,
-        reconnectionDelay,
-        auth: authToken ? { token: authToken } : undefined
+        reconnectionDelay
       });
 
-      socketRef.current = manager.socket('/');
+      socketRef.current = manager.socket('/', authToken ? { auth: { token: authToken } } : undefined);
 
       socketRef.current.on('connect', () => {
         setIsConnected(true);

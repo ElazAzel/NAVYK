@@ -39,10 +39,10 @@ export function middleware(request: NextRequest) {
 // Конфигурация: указываем, для каких путей срабатывает middleware
 export const config = {
   matcher: [
-    '/students/:path*',
-    '/employers/:path*',
-    '/universities/:path*',
-    '/mentors/:path*',
+    '/student/:path*',
+    '/employer/:path*',
+    '/university/:path*',
+    '/mentor/:path*',
     '/admin/:path*',
   ],
 } 

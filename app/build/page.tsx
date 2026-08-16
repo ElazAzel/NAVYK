@@ -27,7 +27,7 @@ export default function BuildPage() {
       icon: <UserIcon className="h-5 w-5" />,
       links: [
         {
-          url: "/students/profile",
+          url: "/student/profile",
           title: "Профиль студента",
           description: "Личный профиль и карьерный план студента"
         }
@@ -40,7 +40,7 @@ export default function BuildPage() {
       icon: <BuildingOfficeIcon className="h-5 w-5" />,
       links: [
         {
-          url: "/employers/dashboard",
+          url: "/employer/dashboard",
           title: "Дашборд работодателя",
           description: "Аналитика и управление вакансиями"
         }
@@ -53,7 +53,7 @@ export default function BuildPage() {
       icon: <AcademicCapIcon className="h-5 w-5" />,
       links: [
         {
-          url: "/universities/dashboard",
+          url: "/university/dashboard",
           title: "Дашборд университета",
           description: "Управление образовательными программами"
         }
@@ -66,7 +66,7 @@ export default function BuildPage() {
       icon: <UserGroupIcon className="h-5 w-5" />,
       links: [
         {
-          url: "/mentors/dashboard",
+          url: "/mentor/dashboard",
           title: "Дашборд ментора",
           description: "Управление сессиями и отзывами студентов"
         }
@@ -134,7 +134,7 @@ export default function BuildPage() {
             <CardFooter className="flex justify-between border-t pt-6">
               <Badge variant="outline">{rolePage.links.length} {rolePage.links.length === 1 ? 'страница' : 'страницы'}</Badge>
               <Button variant="ghost" size="sm" asChild>
-                <Link href={`/${rolePage.role === "student" ? "students/profile" : rolePage.role + "s/dashboard"}`}>
+                <Link href={`/${rolePage.role}/dashboard`}>
                   Перейти к основной странице
                 </Link>
               </Button>

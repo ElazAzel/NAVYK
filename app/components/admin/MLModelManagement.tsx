@@ -31,7 +31,7 @@ import {
   Target,
   DollarSign
 } from "lucide-react";
-import { modelTrainer } from "@/app/lib/ml/model-trainer";
+import { modelTrainer, TrainingData } from "@/app/lib/ml/model-trainer";
 import { recommendationMetrics } from "@/app/lib/analytics/recommendation-metrics";
 import { useToast } from "@/components/ui/use-toast";
 import { Recommendation } from "@/app/lib/types/recommendations";
@@ -86,8 +86,8 @@ export default function MLModelManagement() {
     try {
       setIsTraining(true);
 
-      const mockTrainingData: Recommendation[] = [];
-      const mockValidationData: Recommendation[] = [];
+      const mockTrainingData: TrainingData[] = [];
+      const mockValidationData: TrainingData[] = [];
 
       const result = await modelTrainer.trainModel(
         mockTrainingData,

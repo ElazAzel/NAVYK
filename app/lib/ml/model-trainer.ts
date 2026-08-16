@@ -3,7 +3,7 @@ import { User } from '../types/user';
 import { Recommendation } from '../types/recommendations';
 import { advancedRecommendationEngine } from './advanced-recommendation-engine';
 
-interface TrainingData {
+export interface TrainingData {
   userId: string;
   recommendationId: string;
   interactionType: 'view' | 'click' | 'apply' | 'dismiss';
@@ -94,7 +94,11 @@ export class ModelTrainer {
       await this.preprocessData(validationData);
 
     // Получаем предсказания модели
-    const predictions = await advancedRecommendationEngine['model'].predict([
+    const model = advancedRecommendationEngine['model'];
+    if (!model) {
+      throw new Error('Модель не инициализирована');
+    }
+    const predictions = await model.predict([
       userFeatures,
       itemFeatures,
       contextFeatures
@@ -166,7 +170,11 @@ export class ModelTrainer {
       } = await this.preprocessData(trainingData);
 
       // Обучаем модель
-      const history = await advancedRecommendationEngine['model'].fit(
+      const model = advancedRecommendationEngine['model'];
+      if (!model) {
+        throw new Error('Модель не инициализирована');
+      }
+      const history = await model.fit(
         [userFeatures, itemFeatures, contextFeatures],
         labels,
         {

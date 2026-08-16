@@ -647,7 +647,7 @@ export default function StudentDashboard() {
                 <div className="mt-4 pt-3 border-t">
                   <div className="flex justify-between items-center">
                     <Link
-                      href="/students/recommendations"
+                      href="/recommendations"
                       className="inline-flex items-center text-sm text-primary"
                     >
                       Все рекомендации
@@ -690,7 +690,7 @@ export default function StudentDashboard() {
                   </div>
                 ))}
                 <div className="pt-2 border-t">
-                  <Link href="/students/events">
+                  <Link href="/student/events">
                     <Button size="sm" variant="ghost" className="w-full justify-center">
                       Все мероприятия
                     </Button>
@@ -735,7 +735,7 @@ export default function StudentDashboard() {
                   <AnimatedProgressBar value={65} max={100} color="blue-500" />
                 </div>
                 <div className="pt-2 border-t">
-                  <Link href="/students/skills">
+                  <Link href="/student/profile">
                     <Button size="sm" variant="ghost" className="w-full justify-center">
                       Полный профиль навыков
                     </Button>
@@ -788,7 +788,7 @@ export default function StudentDashboard() {
                   </div>
                 </div>
                 <div className="pt-2 border-t">
-                  <Link href="/students/activity">
+                  <Link href="/student/achievements">
                     <Button size="sm" variant="ghost" className="w-full justify-center">
                       Подробная статистика
                     </Button>

@@ -17,9 +17,10 @@ interface NavItem {
 
 interface RoleNavigationProps {
   className?: string;
+  vertical?: boolean;
 }
 
-export default function RoleNavigation({ className }: RoleNavigationProps) {
+export default function RoleNavigation({ className, vertical = false }: RoleNavigationProps) {
   const { user } = useAuth();
   const pathname = usePathname();
 
@@ -28,7 +29,7 @@ export default function RoleNavigation({ className }: RoleNavigationProps) {
   const navItems: NavItem[] = navigationConfig[userRole as NonNullable<UserRole>] ?? [];
 
   return (
-    <nav className={cn("flex space-x-4", className)}>
+    <nav className={cn("space-y-1", vertical && "flex flex-col", className)}>
       {navItems.map((item) => {
         const isActive = pathname.startsWith(item.href);
         return (
@@ -37,6 +38,7 @@ export default function RoleNavigation({ className }: RoleNavigationProps) {
             href={item.href}
             className={cn(
               "inline-flex items-center rounded-lg px-3 py-2",
+              vertical && "w-full",
               "hover:bg-accent hover:text-accent-foreground",
               "transition-colors",
               isActive

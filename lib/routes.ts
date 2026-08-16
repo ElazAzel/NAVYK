@@ -20,23 +20,21 @@ export const ROUTES: AppRoutes = {
 
   // Страницы для работодателей
   EMPLOYER: {
-    DASHBOARD: '/employers/dashboard',
-    JOBS: '/employers/jobs',
-    CANDIDATES: '/employers/candidates',
+    DASHBOARD: '/employer/dashboard',
+    JOBS: '/employer/jobs',
+    CANDIDATES: '/employer/candidates',
   },
 
   // Страницы для университетов
   UNIVERSITY: {
-    DASHBOARD: '/universities/dashboard',
-    STUDENTS: '/universities/students',
-    ANALYTICS: '/universities/analytics',
+    DASHBOARD: '/university/dashboard',
+    STUDENTS: '/university/students',
+    ANALYTICS: '/university/analytics',
   },
 
   // Страницы для менторов
   MENTOR: {
-    DASHBOARD: '/mentors/dashboard',
-    SESSIONS: '/mentors/sessions',
-    STUDENTS: '/mentors/students',
+    DASHBOARD: '/mentor/dashboard',
   },
 
   // Страницы для администраторов
@@ -72,9 +70,7 @@ export const PROTECTED_ROUTES = {
   [ROUTES.UNIVERSITY.ANALYTICS]: ['university'],
   
   [ROUTES.MENTOR.DASHBOARD]: ['mentor'],
-  [ROUTES.MENTOR.SESSIONS]: ['mentor'],
-  [ROUTES.MENTOR.STUDENTS]: ['mentor'],
-  
+
   [ROUTES.ADMIN.DASHBOARD]: ['admin'],
   [ROUTES.ADMIN.USERS]: ['admin'],
   [ROUTES.ADMIN.SETTINGS]: ['admin'],
@@ -100,8 +96,6 @@ export const USER_NAVIGATION = {
   ],
   mentor: [
     { name: 'Дашборд', path: ROUTES.MENTOR.DASHBOARD },
-    { name: 'Сессии', path: ROUTES.MENTOR.SESSIONS },
-    { name: 'Студенты', path: ROUTES.MENTOR.STUDENTS },
   ],
   admin: [
     { name: 'Дашборд', path: ROUTES.ADMIN.DASHBOARD },

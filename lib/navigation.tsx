@@ -90,16 +90,6 @@ export const navigationConfig: RoleNavMap = {
       title: "Дашборд",
       href: ROUTES.MENTOR.DASHBOARD,
       icon: <Icons.dashboard className="h-5 w-5" />
-    },
-    {
-      title: "Сессии",
-      href: ROUTES.MENTOR.SESSIONS,
-      icon: <Icons.calendar className="h-5 w-5" />
-    },
-    {
-      title: "Студенты",
-      href: ROUTES.MENTOR.STUDENTS,
-      icon: <Icons.users className="h-5 w-5" />
     }
   ],
   admin: [

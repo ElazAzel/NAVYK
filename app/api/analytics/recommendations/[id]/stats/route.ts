@@ -1,11 +1,12 @@
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-type Params = { params: { id: string } }
+type Params = { params: Promise<{ id: string }> }
 
 export async function GET(request: NextRequest, { params }: Params) {
   try {
-    const recommendationId = params.id;
+    const { id } = await params;
+    const recommendationId = id;
     
     // В реальном приложении здесь будет запрос к базе данных
     // Сейчас возвращаем моковые данные для демонстрации

@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon, TrendingUp, BookOpen, Briefcase } from "lucide-react";
-import { RecommendationEngine } from "@/lib/ml/recommendation-engine";
+import { RecommendationEngine } from "@/app/lib/ml/recommendation-engine";
 import { useNotifications } from "../notifications/NotificationsProvider";
 
 interface EnhancedRecommendation {
@@ -31,7 +31,22 @@ interface EnhancedRecommendation {
   competitionLevel?: number;
 }
 
-export default function EnhancedRecommendationEngine({ type = "all" }: { type?: "course" | "job" | "event" | "all" }) {
+interface RecommendationFilters {
+  skills: string[];
+  employmentType: string[];
+  experienceLevel: string[];
+  salary: Record<string, unknown>;
+  difficulty: string[];
+  matchScore: number;
+}
+
+export default function EnhancedRecommendationEngine({
+  type = "all",
+  filters
+}: {
+  type?: "course" | "job" | "event" | "all";
+  filters?: RecommendationFilters;
+}) {
   const [recommendations, setRecommendations] = useState<EnhancedRecommendation[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedEvents, setSelectedEvents] = useState<any[]>([]);

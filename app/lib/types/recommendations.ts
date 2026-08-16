@@ -19,6 +19,8 @@ export interface BaseRecommendation {
   provider?: string;
   location?: string;
   imageUrl?: string;
+  category?: string;
+  tags?: string[];
 }
 
 export interface CourseRecommendation extends BaseRecommendation {
