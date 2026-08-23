@@ -10,9 +10,13 @@ interface PageLayoutProps {
 
 const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
   return (
-    <div className="flex min-h-[100dvh] flex-col">
+    <div className="min-h-screen flex flex-col">
       <NavBar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 bg-background py-8">
+        <div className="container mx-auto px-4">
+          {children}
+        </div>
+      </main>
       <Footer />
     </div>
   );

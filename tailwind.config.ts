@@ -9,8 +9,10 @@ const config: Config = {
   theme: {
     container: {
       center: true,
-      padding: "1.5rem",
-      screens: { "2xl": "1280px" },
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
     },
     extend: {
       colors: {
@@ -26,14 +28,6 @@ const config: Config = {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
-        },
-        success: {
-          DEFAULT: "hsl(var(--success))",
-          foreground: "hsl(var(--success-foreground))",
-        },
-        warning: {
-          DEFAULT: "hsl(var(--warning))",
-          foreground: "hsl(var(--warning-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -56,28 +50,10 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
-      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
-      boxShadow: {
-        // Тени тонированы в холодный серый, без цветного свечения
-        card: "0 1px 2px hsl(225 9% 4.5% / 0.05), 0 0 0 1px hsl(var(--border))",
-        raised:
-          "0 8px 24px hsl(225 9% 4.5% / 0.08), 0 2px 6px hsl(225 9% 4.5% / 0.05), 0 0 0 1px hsl(var(--border))",
-        dropdown:
-          "0 12px 32px hsl(225 9% 4.5% / 0.14), 0 2px 8px hsl(225 9% 4.5% / 0.06), 0 0 0 1px hsl(var(--border))",
-      },
-      transitionTimingFunction: {
-        ui: "cubic-bezier(0.2, 0, 0, 1)",
-      },
-      transitionDuration: {
-        "150": "150ms",
-        "250": "250ms",
       },
       keyframes: {
         "accordion-down": {
@@ -88,16 +64,57 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in": {
-          from: { opacity: "0", transform: "translateY(8px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s cubic-bezier(0.2, 0, 0, 1)",
-        "accordion-up": "accordion-up 0.2s cubic-bezier(0.2, 0, 0, 1)",
-        "fade-in": "fade-in 0.25s cubic-bezier(0.2, 0, 0, 1) both",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
+      maxWidth: {
+        'screen-xl': '75rem',
+        'screen-2xl': '83.75rem'
+      },
+      boxShadow: {
+        'cause-shadow': '0px 4px 17px 0px #00000008',
+        'linckedin': "0px 19px 30px 0px #00000033",
+        'manage-shadow': "0px 4px 5px 1px #c1c1c159",
+        'testimonial': "0px 5px 10px 0px #5968760D"
+      },
+      transitionDuration: {
+        '150': '150ms',
+      },
+      spacing: {
+        '6.25': '6.25rem',
+        '70%': '70%',
+        '40%': '40%',
+        '30%': '30%',
+        '80%': '80%',
+        '8.5': '8.5rem',
+        '50': '50rem',
+        '51': "54.375rem",
+        '25': '35.625rem',
+        '29': '28rem',
+        '120': '120rem',
+        '45': '45rem',
+        '94': '22.5rem',
+        '85': '21rem',
+        '3.75': '3.75rem'
+      },
+      inset: {
+        '5%': '5%',
+        '35%': '35%'
+      },
+      zIndex: {
+        '1': '1',
+        '2': '2',
+        '999': '999'
+      },
+      blur: {
+        '220': '220px',
+        '400': '400px',
+      },
+      backgroundImage: {
+        faqBg: "url('/images/faq/swirl.png')",
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

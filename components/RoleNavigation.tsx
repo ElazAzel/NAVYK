@@ -24,31 +24,32 @@ export default function RoleNavigation({ className, vertical = false }: RoleNavi
   const { user } = useAuth();
   const pathname = usePathname();
 
-  const userRole = user?.role ?? "student";
+  // Получаем навигационные элементы для текущей роли пользователя
+  const userRole = user?.role ?? 'student';
   const navItems: NavItem[] = navigationConfig[userRole as NonNullable<UserRole>] ?? [];
 
   return (
-    <nav
-      aria-label="Навигация по разделу"
-      className={cn("space-y-0.5", vertical && "flex flex-col", className)}
-    >
+    <nav className={cn("space-y-1", vertical && "flex flex-col", className)}>
       {navItems.map((item) => {
         const isActive = pathname.startsWith(item.href);
         return (
           <Link
             key={item.href}
             href={item.href}
-            aria-current={isActive ? "page" : undefined}
             className={cn(
-              "inline-flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-[background-color,color] duration-150 ease-ui",
-              vertical ? "w-full" : "",
+              "inline-flex items-center rounded-lg px-3 py-2",
+              vertical && "w-full",
+              "hover:bg-accent hover:text-accent-foreground",
+              "transition-colors",
               isActive
-                ? "bg-secondary text-foreground [&_svg]:text-primary"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground"
             )}
           >
-            {item.icon}
-            <span className={cn(isActive && "font-medium")}>{item.title}</span>
+            <div className="flex items-center gap-2">
+              {item.icon}
+              <span>{item.title}</span>
+            </div>
           </Link>
         );
       })}

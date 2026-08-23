@@ -94,7 +94,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
     try {
       if (securityState.isAuthenticated && securityState.userRoles.length > 0) {
         const secret = new TextEncoder().encode(
-          process.env.NEXT_PUBLIC_JWT_SECRET!
+          process.env.NEXT_PUBLIC_JWT_SECRET || 'default_secret_key_for_jwt_please_change_in_production'
         );
         
         const expiryDate = new Date();
@@ -130,7 +130,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
   const verifyAndRefreshToken = useCallback(async (token: string) => {
     try {
       const secret = new TextEncoder().encode(
-        process.env.NEXT_PUBLIC_JWT_SECRET!
+        process.env.NEXT_PUBLIC_JWT_SECRET || 'default_secret_key_for_jwt_please_change_in_production'
       );
       
       const { payload } = await jwtVerify(token, secret);
@@ -266,7 +266,7 @@ export const SecurityProvider = ({ children }: { children: ReactNode }) => {
       if (isValid) {
         // Создание JWT токена (в реальном приложении токен возвращается с сервера)
         const secret = new TextEncoder().encode(
-          process.env.NEXT_PUBLIC_JWT_SECRET!
+          process.env.NEXT_PUBLIC_JWT_SECRET || 'default_secret_key_for_jwt_please_change_in_production'
         );
         
         // Определение ролей пользователя на основе имени пользователя (для демонстрации)
