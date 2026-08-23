@@ -105,7 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setTimeout(() => {
         const demoUser = DEMO_USERS[email];
         
-        if (demoUser && password === "password") {
+        if (demoUser && password === "demo123") {
           setUser(demoUser);
           localStorage.setItem("navyk_user", JSON.stringify(demoUser));
           setIsLoading(false);

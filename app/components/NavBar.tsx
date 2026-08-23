@@ -2,74 +2,61 @@
 
 import Link from "next/link";
 import React from "react";
+import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import ToggleButton from "@/components/ToggleButton";
 import UserNav from "@/components/UserNav";
-import RoleNavigation from "@/components/RoleNavigation";
-import NotificationBell from "@/app/components/notifications/NotificationBell";
-import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 
+const marketingLinks = [
+  { href: "/features", label: "Возможности" },
+  { href: "/pricing", label: "Тарифы" },
+  { href: "/events", label: "Мероприятия" },
+  { href: "/blog", label: "Блог" },
+  { href: "/faq", label: "FAQ" },
+] as const;
+
 const NavBar = () => {
-  const { user } = useAuth();
-  const showRoleNav = user && user.role !== null;
+  const pathname = usePathname();
 
   return (
-    <div className="border-b z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0">
-      <div className="container px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 items-center justify-between">
-          <div className="flex items-center gap-6">
+    <header className="sticky top-0 z-50 border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <div className="page-container">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-8">
             <Logo />
-            {!user && (
-              <nav className="hidden md:flex items-center gap-6">
-                <Link 
-                  href="/"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Главная
-                </Link>
-                <Link 
-                  href="/features"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Возможности
-                </Link>
-                <Link 
-                  href="/pricing"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Тарифы
-                </Link>
-                <Link 
-                  href="/about"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  О нас
-                </Link>
-                <Link 
-                  href="/contact"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Контакты
-                </Link>
-              </nav>
-            )}
+            <nav
+              aria-label="Основная навигация"
+              className="hidden items-center gap-1 md:flex"
+            >
+              {marketingLinks.map((link) => {
+                const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-ui",
+                      isActive
+                        ? "font-medium text-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
-          
+
           <div className="flex items-center gap-2">
-            <NotificationBell />
             <ToggleButton />
             <UserNav />
           </div>
         </div>
-        
-        {showRoleNav && (
-          <div className="h-12 -mb-px border-t border-border pt-0 overflow-x-auto">
-            <RoleNavigation className="h-full flex items-center" />
-          </div>
-        )}
       </div>
-    </div>
+    </header>
   );
 };
 

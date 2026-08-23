@@ -8,20 +8,24 @@ export type StudentRoutes = {
   EVENTS: '/student/events';
   JOBS: '/student/jobs';
   ACHIEVEMENTS: '/student/achievements';
-  SKILLS: '/student/skills';
-  ACTIVITY: '/student/activity';
+  PROJECTS: '/student/projects';
 };
 
 export type EmployerRoutes = {
   DASHBOARD: '/employer/dashboard';
   JOBS: '/employer/jobs';
   CANDIDATES: '/employer/candidates';
+  ANALYTICS: '/employer/analytics';
+  EVENTS: '/employer/events';
+  PROFILE: '/employer/profile';
 };
 
 export type UniversityRoutes = {
   DASHBOARD: '/university/dashboard';
   STUDENTS: '/university/students';
   ANALYTICS: '/university/analytics';
+  EVENTS: '/university/events';
+  PROFILE: '/university/profile';
 };
 
 export type MentorRoutes = {
@@ -30,14 +34,11 @@ export type MentorRoutes = {
 
 export type AdminRoutes = {
   DASHBOARD: '/admin/dashboard';
-  USERS: '/admin/users';
-  SETTINGS: '/admin/settings';
+  ML: '/admin/ml';
 };
 
 export type AppRoutes = {
   HOME: '/';
-  ABOUT: '/about';
-  CONTACT: '/contact';
   STUDENT: StudentRoutes;
   EMPLOYER: EmployerRoutes;
   UNIVERSITY: UniversityRoutes;

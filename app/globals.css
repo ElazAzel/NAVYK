@@ -2,73 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────────────────
+ * NAVYK Design System — "Quiet Chrome"
+ * Один акцент (изумруд) на нейтральной базе. Цвет = смысл.
+ * Тёмная тема построена на ступенях светлоты поверхности, не на тенях.
+ * ───────────────────────────────────────────────────────────────────── */
+
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 220 35% 15%;
+    /* Surfaces */
+    --background: 0 0% 99%;
+    --foreground: 240 6% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 35% 15%;
+    --card-foreground: 240 6% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 35% 15%;
+    --popover-foreground: 240 6% 10%;
 
-    --primary: 221 83% 53%;
-    --primary-foreground: 210 40% 98%;
+    /* Single accent */
+    --primary: 163 88% 24%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 250 89% 60%;
-    --secondary-foreground: 210 40% 98%;
+    /* Neutral surface tier (hover states, subtle fills) */
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 12%;
 
-    --accent: 337 100% 56%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 44%;
 
-    --success: 151 50% 53%;
-    --success-foreground: 210 40% 98%;
+    --accent: 240 5% 94%;
+    --accent-foreground: 240 6% 12%;
 
-    --muted: 210 40% 93%;
-    --muted-foreground: 220 35% 45%;
+    /* Semantic */
+    --success: 160 74% 30%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 92% 40%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 0 72% 46%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 100% 67%;
-    --destructive-foreground: 210 40% 98%;
+    --border: 240 6% 90%;
+    --input: 240 6% 88%;
+    --ring: 163 88% 28%;
 
-    --border: 220 35% 85%;
-    --input: 220 35% 85%;
-    --ring: 221 83% 53%;
+    --radius: 0.625rem;
 
-    --radius: 0.75rem;
+    --chart-1: 163 74% 34%;
+    --chart-2: 199 89% 38%;
+    --chart-3: 262 60% 52%;
+    --chart-4: 35 92% 48%;
+    --chart-5: 0 68% 52%;
   }
 
   .dark {
-    --background: 220 35% 11%;
-    --foreground: 210 40% 98%;
+    /* Luminance steps: canvas → panel → elevated */
+    --background: 225 9% 4.5%;
+    --foreground: 210 14% 95%;
 
-    --card: 220 35% 13%;
-    --card-foreground: 210 40% 98%;
+    --card: 222 8% 7%;
+    --card-foreground: 210 14% 95%;
 
-    --popover: 220 35% 13%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 223 8% 9%;
+    --popover-foreground: 210 14% 95%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 158 62% 52%;
+    --primary-foreground: 165 85% 7%;
 
-    --secondary: 250 89% 65%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 222 7% 11%;
+    --secondary-foreground: 210 12% 90%;
 
-    --accent: 337 100% 61%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 222 7% 11%;
+    --muted-foreground: 220 6% 63%;
 
-    --success: 151 50% 53%;
-    --success-foreground: 210 40% 98%;
+    --accent: 222 7% 15%;
+    --accent-foreground: 210 12% 92%;
 
-    --muted: 220 35% 15%;
-    --muted-foreground: 210 40% 62%;
+    --success: 158 55% 50%;
+    --success-foreground: 165 85% 7%;
+    --warning: 38 90% 56%;
+    --warning-foreground: 32 80% 8%;
+    --destructive: 0 78% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 85% 65%;
-    --destructive-foreground: 210 40% 98%;
+    --border: 220 7% 16%;
+    --input: 220 7% 18%;
+    --ring: 158 62% 52%;
 
-    --border: 220 35% 20%;
-    --input: 220 35% 20%;
-    --ring: 217 91% 60%;
+    --chart-1: 158 62% 52%;
+    --chart-2: 199 80% 58%;
+    --chart-3: 262 70% 68%;
+    --chart-4: 38 90% 56%;
+    --chart-5: 0 78% 64%;
   }
 }
 
@@ -77,133 +102,139 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "kern";
+    font-feature-settings: "kern", "cv05", "ss01";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight font-medium;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
-  /* Улучшение отображения кириллицы */
-  h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select {
-    @apply tracking-tight;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
     text-wrap: balance;
   }
 
-  /* Глобальные стили для карточек */
-  .card {
-    @apply border bg-card text-card-foreground shadow-sm;
+  p {
+    text-wrap: pretty;
   }
 
-  /* Глобальные стили для переходов */
-  .custom-transition {
-    @apply transition duration-300 ease-in-out;
+  /* Числовые данные выравниваются табличными цифрами */
+  .tnums {
+    font-variant-numeric: tabular-nums;
   }
 
-  /* Фиксирование контейнеров */
-  .container {
-    @apply mx-auto px-4;
+  ::selection {
+    background: hsl(var(--primary) / 0.22);
+  }
+
+  /* Видимый фокус без outline-none */
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--ring) / 0.7);
   }
 }
 
 @layer components {
-  /* Стеклянный эффект для карточек */
-  .glass {
-    @apply bg-white/40 dark:bg-gray-950/40 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-gray-800/20;
+  /* Контейнер страниц: 1240px, gutter по брейкпоинтам */
+  .page-container {
+    @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8;
   }
 
-  /* Эффект неоморфизма */
-  .neumorphic {
-    @apply bg-gray-100 dark:bg-gray-800 shadow-[6px_6px_12px_0px_rgba(0,0,0,0.1),-6px_-6px_12px_0px_rgba(255,255,255,0.8)] dark:shadow-[6px_6px_12px_0px_rgba(0,0,0,0.5),-6px_-6px_12px_0px_rgba(255,255,255,0.1)];
+  /* Секция лендинга: вертикальный ритм */
+  .section-y {
+    @apply py-16 md:py-20 lg:py-24;
   }
 
-  /* Градиентная кнопка в стиле Apple */
-  .gradient-button {
-    @apply relative overflow-hidden transition-all duration-300 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white shadow-lg hover:shadow-xl active:scale-95;
+  /* Поверхность панели с полупрозрачным бордером (Linear-style) */
+  .panel {
+    @apply rounded-lg border border-border bg-card;
   }
 
-  /* Анимированная карточка */
-  .card-hover {
-    @apply transition-all duration-300 hover:translate-y-[-5px] hover:shadow-lg;
-  }
-
-  /* Красивая анимация прогресса */
-  .progress-animation {
-    @apply relative overflow-hidden;
-  }
-  
-  .progress-animation::after {
-    content: "";
-    @apply absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-r from-transparent via-white/20 to-transparent;
-    animation: shimmer 1.5s infinite;
-  }
-  
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
-  /* Пульсирующий эффект для индикаторов */
-  .pulse {
-    animation: pulse 2s infinite;
-  }
-  
-  @keyframes pulse {
-    0% {
-      transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(var(--primary), 0.7);
-    }
-    
-    70% {
-      transform: scale(1);
-      box-shadow: 0 0 0 10px rgba(var(--primary), 0);
-    }
-    
-    100% {
-      transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(var(--primary), 0);
-    }
+  /* Единый язык моушена для CSS-переходов */
+  .transition-ui {
+    transition-property: transform, opacity, background-color, border-color, color, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
   }
 }
 
-/* Кастомный скроллбар в стиле Apple */
+/* Скелетон-шиммер: только пока грузится */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton {
+  @apply relative overflow-hidden rounded-md bg-muted;
+}
+
+.skeleton::after {
+  content: "";
+  @apply absolute inset-0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--foreground) / 0.04),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}
+
+/* Тонкий скроллбар */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+  @apply rounded-full bg-border;
+  border: 3px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-600;
+  @apply bg-muted-foreground/40;
+  border: 3px solid transparent;
+  background-clip: padding-box;
 }
 
-/* Плавные переходы для темной темы */
 html.dark {
   color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not(.light) {
-    color-scheme: dark;
-  }
+html.light {
+  color-scheme: light;
 }
-
-html {
-  transition: background-color 0.3s ease;
-} 

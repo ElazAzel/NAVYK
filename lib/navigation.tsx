@@ -1,9 +1,19 @@
 import { ROUTES } from '@/lib/routes';
 import { UserRole } from '@/context/auth-context';
-import { Icons } from '@/components/ui/icons';
+import {
+  LayoutDashboard,
+  Map,
+  BookOpen,
+  CalendarDays,
+  Briefcase,
+  Award,
+  FolderKanban,
+  Users,
+  BarChart3,
+  Building2,
+  Cpu,
+} from 'lucide-react';
 import type { AppRoute } from './types/app-routes';
-
-interface NavIcon extends React.FC<{ className?: string }> {}
 
 interface NavItem {
   title: string;
@@ -15,98 +25,35 @@ type RoleNavMap = Record<NonNullable<UserRole>, NavItem[]>;
 
 export const navigationConfig: RoleNavMap = {
   student: [
-    {
-      title: "Дашборд",
-      href: ROUTES.STUDENT.DASHBOARD,
-      icon: <Icons.dashboard className="h-5 w-5" />
-    },
-    {
-      title: "Профиль",
-      href: ROUTES.STUDENT.PROFILE,
-      icon: <Icons.user className="h-5 w-5" />
-    },
-    {
-      title: "Карьерный план",
-      href: ROUTES.STUDENT.ROADMAP,
-      icon: <Icons.file className="h-5 w-5" />
-    },
-    {
-      title: "Курсы",
-      href: ROUTES.STUDENT.COURSES,
-      icon: <Icons.book className="h-5 w-5" />
-    },
-    {
-      title: "Мероприятия",
-      href: ROUTES.STUDENT.EVENTS,
-      icon: <Icons.calendar className="h-5 w-5" />
-    },
-    {
-      title: "Вакансии",
-      href: ROUTES.STUDENT.JOBS,
-      icon: <Icons.briefcase className="h-5 w-5" />
-    },
-    {
-      title: "Достижения",
-      href: ROUTES.STUDENT.ACHIEVEMENTS,
-      icon: <Icons.award className="h-5 w-5" />
-    }
+    { title: "Дашборд", href: ROUTES.STUDENT.DASHBOARD, icon: <LayoutDashboard className="h-4 w-4" /> },
+    { title: "Карьерный план", href: ROUTES.STUDENT.ROADMAP, icon: <Map className="h-4 w-4" /> },
+    { title: "Курсы", href: ROUTES.STUDENT.COURSES, icon: <BookOpen className="h-4 w-4" /> },
+    { title: "Проекты", href: ROUTES.STUDENT.PROJECTS, icon: <FolderKanban className="h-4 w-4" /> },
+    { title: "Мероприятия", href: ROUTES.STUDENT.EVENTS, icon: <CalendarDays className="h-4 w-4" /> },
+    { title: "Вакансии", href: ROUTES.STUDENT.JOBS, icon: <Briefcase className="h-4 w-4" /> },
+    { title: "Достижения", href: ROUTES.STUDENT.ACHIEVEMENTS, icon: <Award className="h-4 w-4" /> },
+    { title: "Профиль", href: ROUTES.STUDENT.PROFILE, icon: <Users className="h-4 w-4" /> },
   ],
   employer: [
-    {
-      title: "Дашборд",
-      href: ROUTES.EMPLOYER.DASHBOARD,
-      icon: <Icons.dashboard className="h-5 w-5" />
-    },
-    {
-      title: "Управление вакансиями",
-      href: ROUTES.EMPLOYER.JOBS,
-      icon: <Icons.briefcase className="h-5 w-5" />
-    },
-    {
-      title: "Кандидаты",
-      href: ROUTES.EMPLOYER.CANDIDATES,
-      icon: <Icons.users className="h-5 w-5" />
-    }
+    { title: "Дашборд", href: ROUTES.EMPLOYER.DASHBOARD, icon: <LayoutDashboard className="h-4 w-4" /> },
+    { title: "Вакансии", href: ROUTES.EMPLOYER.JOBS, icon: <Briefcase className="h-4 w-4" /> },
+    { title: "Кандидаты", href: ROUTES.EMPLOYER.CANDIDATES, icon: <Users className="h-4 w-4" /> },
+    { title: "Аналитика", href: ROUTES.EMPLOYER.ANALYTICS, icon: <BarChart3 className="h-4 w-4" /> },
+    { title: "Мероприятия", href: ROUTES.EMPLOYER.EVENTS, icon: <CalendarDays className="h-4 w-4" /> },
+    { title: "Профиль", href: ROUTES.EMPLOYER.PROFILE, icon: <Building2 className="h-4 w-4" /> },
   ],
   university: [
-    {
-      title: "Дашборд",
-      href: ROUTES.UNIVERSITY.DASHBOARD,
-      icon: <Icons.dashboard className="h-5 w-5" />
-    },
-    {
-      title: "Студенты",
-      href: ROUTES.UNIVERSITY.STUDENTS,
-      icon: <Icons.users className="h-5 w-5" />
-    },
-    {
-      title: "Аналитика",
-      href: ROUTES.UNIVERSITY.ANALYTICS,
-      icon: <Icons.chart className="h-5 w-5" />
-    }
+    { title: "Дашборд", href: ROUTES.UNIVERSITY.DASHBOARD, icon: <LayoutDashboard className="h-4 w-4" /> },
+    { title: "Студенты", href: ROUTES.UNIVERSITY.STUDENTS, icon: <Users className="h-4 w-4" /> },
+    { title: "Аналитика", href: ROUTES.UNIVERSITY.ANALYTICS, icon: <BarChart3 className="h-4 w-4" /> },
+    { title: "Мероприятия", href: ROUTES.UNIVERSITY.EVENTS, icon: <CalendarDays className="h-4 w-4" /> },
+    { title: "Профиль", href: ROUTES.UNIVERSITY.PROFILE, icon: <Building2 className="h-4 w-4" /> },
   ],
   mentor: [
-    {
-      title: "Дашборд",
-      href: ROUTES.MENTOR.DASHBOARD,
-      icon: <Icons.dashboard className="h-5 w-5" />
-    }
+    { title: "Дашборд", href: ROUTES.MENTOR.DASHBOARD, icon: <LayoutDashboard className="h-4 w-4" /> },
   ],
   admin: [
-    {
-      title: "Дашборд",
-      href: ROUTES.ADMIN.DASHBOARD,
-      icon: <Icons.dashboard className="h-5 w-5" />
-    },
-    {
-      title: "Пользователи",
-      href: ROUTES.ADMIN.USERS,
-      icon: <Icons.users className="h-5 w-5" />
-    },
-    {
-      title: "Настройки",
-      href: ROUTES.ADMIN.SETTINGS,
-      icon: <Icons.settings className="h-5 w-5" />
-    }
+    { title: "Дашборд", href: ROUTES.ADMIN.DASHBOARD, icon: <LayoutDashboard className="h-4 w-4" /> },
+    { title: "ML-модели", href: ROUTES.ADMIN.ML, icon: <Cpu className="h-4 w-4" /> },
   ]
 };

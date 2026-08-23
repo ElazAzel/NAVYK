@@ -1,14 +1,39 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import { ReactNode } from 'react';
 import { Providers } from './providers';
 import { Toaster } from '@/components/ui/toaster';
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] });
+const manrope = Manrope({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata = {
-  title: 'NAVYK - Платформа для развития навыков и карьеры',
-  description: 'Единая экосистема для студентов, компаний и университетов Казахстана, где талант встречается с возможностями',
+  title: {
+    default: 'NAVYK — платформа развития навыков и карьеры',
+    template: '%s · NAVYK',
+  },
+  description:
+    'Единая экосистема для студентов, компаний и университетов Казахстана: карьерные планы, вакансии, мероприятия и аналитика в одном месте.',
+  openGraph: {
+    title: 'NAVYK — платформа развития навыков и карьеры',
+    description:
+      'Единая экосистема для студентов, компаний и университетов Казахстана.',
+    type: 'website',
+    locale: 'ru_RU',
+    siteName: 'NAVYK',
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#fcfcfc' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0b0e' },
+  ],
 };
 
 export default function RootLayout({
@@ -17,12 +42,8 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
-      <body className={`${inter.className} antialiased min-h-screen flex flex-col bg-background`}>
+    <html lang="ru" suppressHydrationWarning className={manrope.variable}>
+      <body className="font-sans antialiased min-h-[100dvh] flex flex-col bg-background">
         <Providers>
           {children}
         </Providers>

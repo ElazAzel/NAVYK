@@ -20,7 +20,7 @@ const io = new Server(server, {
 });
 
 // Секретный ключ для JWT
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // URL ML сервиса
 const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
